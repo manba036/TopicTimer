@@ -70,16 +70,6 @@ html, body {
     position: absolute;
     top: .2em;
     right: .5em;
-
-    @mixin nav-link($icon) {
-      @include icon($icon) {
-        margin-left: .3em;
-      }
-    }
-    .main    { @include nav-link('hour-glass'); }
-    .setting { @include nav-link('cog');        }
-    .usage   { @include nav-link('question');   }
-    .info    { @include nav-link('info');       }
   }
 
   .pageContent {
@@ -110,20 +100,31 @@ html, body {
   }
 }
 
+@mixin nav-link($icon) {
+  @include icon($icon) {
+    margin-left: .3em;
+  }
+}
+.main    { @include nav-link('hour-glass'); }
+.setting { @include nav-link('cog');        }
+.usage   { @include nav-link('question');   }
+.info    { @include nav-link('info');       }
+
 @mixin controller {
   a {
     cursor: pointer;
   }
-  @mixin topic-button($icon) {
-    @include icon($icon);
-    margin: 0 .1em;
-  }
-  .play  { @include topic-button('play');  }
-  .pause { @include topic-button('pause'); }
-  .stop  { @include topic-button('stop');  }
-  .prev  { @include topic-button('prev');  }
-  .next  { @include topic-button('next');  }
 }
+
+@mixin topic-button($icon) {
+  @include icon($icon);
+  margin: 0 .1em;
+}
+.play  { @include topic-button('play');  }
+.pause { @include topic-button('pause'); }
+.stop  { @include topic-button('stop');  }
+.prev  { @include topic-button('prev');  }
+.next  { @include topic-button('next');  }
 
 #main {
   @include page;
