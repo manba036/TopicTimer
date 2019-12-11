@@ -13,6 +13,7 @@
     "gulp-sass": "^4.0.2",
     "node-sass": "^4.13.0",
     "reactify": "^1.1.0",
+    "store": "^2.0.12",
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
