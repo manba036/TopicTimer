@@ -15,7 +15,7 @@ module.exports = React.createClass({
           <Controller topic={topic} />
         </td>
         <td className='time' onClick={this.props.edit}>
-          {topic.remain.toString()}/{topic.entire.toString()}
+          {topic.remain.toString()}/{topic.elapsed.toString()}/{topic.entire.toString()}
         </td>
         <td className='description' onClick={this.props.edit}>
           {topic.description}

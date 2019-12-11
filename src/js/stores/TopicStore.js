@@ -1,6 +1,7 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var TimerConstants = require('../constants/TimerConstants');
+var Time = require('../utils/time.js');
 var assign = require('object-assign');
 var clone = require('clone');
 
@@ -46,6 +47,7 @@ AppDispatcher.register(function(action) {
       _topics.map(function(topic){
         if ( topic.equal( action.topic ) ) {
           topic.remain = clone( topic.entire );
+          topic.elapsed = new Time('00:00');
         }
       });
       TopicStore.emitChange();
@@ -53,6 +55,7 @@ AppDispatcher.register(function(action) {
 
     case TimerConstants.COUNTDOWN_TOPIC:
       var remainTime = action.topic.remain.decrease();
+      action.topic.elapsed.decrease(-1);
       if (typeof(action.callback) == 'function') {
         action.callback(remainTime);
       }
