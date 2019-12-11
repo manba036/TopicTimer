@@ -74,7 +74,7 @@ module.exports = React.createClass({
       <Page name='setting'>
         <Nav current='setting' />
         <div className='pageContent'>
-          <h2>Setting</h2>
+          <h2>議題</h2>
           {content}
         </div>
       </Page>
