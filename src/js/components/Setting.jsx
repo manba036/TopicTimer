@@ -77,6 +77,7 @@ module.exports = React.createClass({
           <h2>議題</h2>
           {content}
         </div>
+        <div className="topic_description">【説明】残り時間&nbsp;/&nbsp;実際に使った時間&nbsp;/&nbsp;予定時間&nbsp;&nbsp;議題</div>
       </Page>
     );
   },
