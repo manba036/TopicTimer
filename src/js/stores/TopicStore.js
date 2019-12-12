@@ -57,7 +57,7 @@ AppDispatcher.register(function(action) {
       var remainTime = action.topic.remain.decrease();
       action.topic.elapsed.decrease(-1);
       if (typeof(action.callback) == 'function') {
-        action.callback(remainTime);
+        action.callback(remainTime, action.topic.entire._time);
       }
       TopicStore.emitChange();
       break;

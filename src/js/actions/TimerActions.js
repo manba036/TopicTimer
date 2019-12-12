@@ -5,7 +5,10 @@ var Topic = require('../utils/topic');
 var sha1 = require('sha1');
 
 var _timer = null;
-var audio = new Audio('./lib/dora.mp3');
+var audio3 = new Audio('./lib/3.mp3');
+var audio1 = new Audio('./lib/1.mp3');
+var audio0 = new Audio('./lib/0.mp3');
+var audioX = new Audio('./lib/over.mp3');
 
 module.exports = {
 
@@ -68,9 +71,18 @@ module.exports = {
       AppDispatcher.dispatch({
         actionType: TimerConstants.COUNTDOWN_TOPIC,
         topic: state.selected,
-        callback: function(remainTime) {
-          if (remainTime === 0 && state.bell) {
-            audio.play();
+        callback: function(remainTime, entireTime) {
+          if (remainTime === 1 && state.bell) {
+            audio0.play();
+          }
+          else if (remainTime === (1*60+1) && state.bell) {
+            audio1.play();
+          }
+          else if (entireTime >= (6*60) && remainTime === (3*60+1) && state.bell) {
+            audio3.play();
+          }
+          else if (remainTime < 0 && (remainTime % 60) === 0 && state.bell) {
+            audioX.play();
           }
         }
       });
