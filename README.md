@@ -34,7 +34,10 @@ ___
 ```bash
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
+
+git clone https://github.com/manba036/TopicTimer
 cd TopicTimer
+
 npm install -D
 npx gulp build
 ```
