@@ -17,8 +17,10 @@ module.exports = React.createClass({
           <h3>お問い合わせ</h3>
           <p>
             不具合・改善要望などありましたら、
-            <a href='https://github.com/hoto17296/TopicTimer' target='_blank'>GitHub</a> にプルリクエストを投げるか、
-            <a href='http://hoto.me/' target='_blank'>@hoto17296</a> までご連絡ください。
+            <a href='https://github.com/manba036/TopicTimer' target='_blank'>GitHub</a> にプルリクエストを投げてください。
+          </p>
+          <p>
+            本家は<a href='https://github.com/hoto17296/TopicTimer' target='_blank'>こちら</a>です。
           </p>
         </div>
       </Page>
