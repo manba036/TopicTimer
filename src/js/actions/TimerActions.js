@@ -1,5 +1,6 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var TimerConstants = require('../constants/TimerConstants');
+var TopicConstants = require('../constants/TopicConstants');
 var StateStore = require('../stores/StateStore');
 var Topic = require('../utils/topic');
 var sha1 = require('sha1');
@@ -21,7 +22,10 @@ module.exports = {
   },
 
   // トピックをセットする
-  setTopic: function(topic) {
+  setTopic: function(topic, total) {
+    if (topic.description === total.description) {
+      this.pauseCounting();
+    }
     AppDispatcher.dispatch({
       actionType: TimerConstants.UPDATE_STATES,
       states: { selected: topic },
@@ -29,16 +33,16 @@ module.exports = {
   },
 
   // カウントを開始する
-  startCounting: function(topic){
+  startCounting: function(topic, total){
     if (topic) {
-      this.setTopic(topic);
+      this.setTopic(topic, total);
     }
     clearInterval(_timer);
     this._scrollTop();
     _timer = setInterval(this.countDown, 1000);
     AppDispatcher.dispatch({
       actionType: TimerConstants.UPDATE_STATES,
-      states: { counting: true },
+      states: { total: total, counting: true },
     });
   },
 
@@ -54,13 +58,14 @@ module.exports = {
   },
 
   // カウントを停止する
-  stopCounting: function(topic) {
+  stopCounting: function(topic, total) {
     if ( topic.equal( StateStore.get().selected ) ) {
       this.pauseCounting();
     }
     AppDispatcher.dispatch({
       actionType: TimerConstants.RESET_TOPIC,
       topic: topic,
+      total: total
     });
   },
 
@@ -71,6 +76,7 @@ module.exports = {
       AppDispatcher.dispatch({
         actionType: TimerConstants.COUNTDOWN_TOPIC,
         topic: state.selected,
+        total: state.total,
         callback: function(remainTime, entireTime) {
           if (remainTime === 1 && state.bell) {
             audio0.play();
@@ -99,7 +105,7 @@ module.exports = {
   // 文字列の各行をパースしてTopicオブジェクトを生成する
   _parseTopics: function(str){
     var prev = null;
-    return str
+    topics = str
       .split("\n").filter(function(v){ return !! v.trim() }) // 改行で分割して空行を除去
       .map(function(v, idx){
         try {
@@ -124,6 +130,18 @@ module.exports = {
         }
       })
       .filter(function(v){ return !! v }); // パースできなかった行を除外
+    var total = topics.find(topic => topic.description === TopicConstants.total_description);
+    total.entire._time = 0;
+    total.elapsed._time = 0;
+    total.remain._time = 0;
+    topics.forEach(function(topic) {
+      if (topic.description !== total.description) {
+        total.entire._time += topic.entire._time;
+        total.elapsed._time += topic.elapsed._time;
+        total.remain._time += topic.remain._time;
+      }
+    });
+    return topics;
   },
 
   // スムーススクロールする

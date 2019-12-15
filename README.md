@@ -22,7 +22,7 @@
 入力されたトピック情報は ~~Cookie~~ localStorage に保持されます。削除したい場合は入力エリアを空にして保存してください。
 
 タイマー画面右下のサウンド設定が ON になっていると、残り時間が 03:00※, 01:00, 00:00 になったときに音が鳴ります。時間オーバーになった場合は1分毎に音が鳴ります。  
-  
+
 ※03:00の音は予定時間が06:00以上の場合に有効
 
 ___
@@ -38,6 +38,21 @@ sudo apt-get install -y nodejs
 git clone https://github.com/manba036/TopicTimer
 cd TopicTimer
 
+npm install -D
+npx gulp build
+```
+
+___
+
+## manba036 追記 for Windows
+
+[Node.js 公式ページ](https://nodejs.org/ja/download/releases/)から Node.js 8.x をダウンロードしてインストールします。
+
+[TopicTimer](https://github.com/manba036/TopicTimer)を git clone または zip をダウンロードするなどします。
+
+スタートメニューから"Node.js"→"Node.js command prompt"を起動します。
+
+```cmd
 npm install -D
 npx gulp build
 ```

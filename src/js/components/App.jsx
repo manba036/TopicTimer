@@ -6,6 +6,7 @@ var TimerActions = require('../actions/TimerActions');
 
 var TopicStore = require('../stores/TopicStore');
 var StateStore = require('../stores/StateStore');
+var TopicConstants = require('../constants/TopicConstants');
 
 var Main = require('./Main.jsx');
 var Setting = require('./Setting.jsx');
@@ -51,7 +52,7 @@ module.exports = React.createClass({
   render: function() {
     return (
       <div id='content'>
-        <Main {...this.state.states} />
+        <Main {...this.state.states} total={this.state.topics.find(topic => topic.description === TopicConstants.total_description)}/>
         <Setting topics={this.state.topics} />
         <Usage />
         <Info />

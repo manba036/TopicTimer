@@ -4,18 +4,18 @@ var sprintf = require('sprintf');
 
 var Topic = function(str) {
   var str = str.split(',', 4);
-  this.remain = new Time(str[0]);
+  this.remain = ( str.length <= 2 ) ? (new Time(str[0])) : (new Time(str[2]));
   this.elapsed = ( str.length <= 2 ) ? (new Time('00:00')) : (new Time(str[1]));
-  this.entire = ( str.length <= 2 ) ? (new Time(str[0])) : (new Time(str[2]));
+  this.entire = new Time(str[0]);
   this.description = ( str.length < 2 ) ? '' : (( str.length == 2 ) ? str[1] : str[3]);
   this.key = null;
 }
 
 Topic.prototype.toString = function() {
   return sprintf('%s,%s,%s,%s',
-    this.remain.toString(),
-    this.elapsed.toString(),
     this.entire.toString(),
+    this.elapsed.toString(),
+    this.remain.toString(),
     this.description
   );
 };

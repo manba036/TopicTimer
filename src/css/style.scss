@@ -144,7 +144,7 @@ html, body {
 
     .remainTime {
       color: #f33;
-      font-size: 16em;
+      //font-size: 16em;
     }
 
     a {
@@ -181,6 +181,19 @@ html, body {
         margin-right: .3em;
       }
     }
+
+    .total {
+      //@include icon('hour-glass') {
+      //  margin-right: .3em;
+      //}
+    }
+
+    .total_over {
+      //@include icon('hour-glass') {
+      //  margin-right: .3em;
+      //}
+      color: #f33;
+    }
   }
 
   .controller {
@@ -216,14 +229,6 @@ html, body {
     }
   }
 
-  .topic_description {
-    font-size: 0.8em;
-    text-align: center;
-    position: absolute;
-    bottom: .2em;
-    right: .4em;
-  }
-
   textarea {
     width: 100%;
     height: 12em;
@@ -247,6 +252,15 @@ html, body {
 
   .topic {
     @include controller;
+
+    .over {
+      color: #f33;
+    }
+
+    .header {
+      font-size: 0.8em;
+      text-align: center;
+    }
 
     .time {
       cursor: pointer;

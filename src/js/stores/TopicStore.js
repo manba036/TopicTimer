@@ -46,6 +46,8 @@ AppDispatcher.register(function(action) {
     case TimerConstants.RESET_TOPIC:
       _topics.map(function(topic){
         if ( topic.equal( action.topic ) ) {
+          action.total.remain._time += (topic.entire._time - topic.remain._time)
+          action.total.elapsed._time -= topic.elapsed._time
           topic.remain = clone( topic.entire );
           topic.elapsed = new Time('00:00');
         }
@@ -54,10 +56,14 @@ AppDispatcher.register(function(action) {
       break;
 
     case TimerConstants.COUNTDOWN_TOPIC:
-      var remainTime = action.topic.remain.decrease();
-      action.topic.elapsed.decrease(-1);
+      if (action.topic.description !== action.total.description) {
+        action.topic.remain.decrease();
+        action.topic.elapsed.decrease(-1);
+        action.total.remain.decrease();
+        action.total.elapsed.decrease(-1);
+      }
       if (typeof(action.callback) == 'function') {
-        action.callback(remainTime, action.topic.entire._time);
+        action.callback(action.topic.remain._time, action.topic.entire._time);
       }
       TopicStore.emitChange();
       break;

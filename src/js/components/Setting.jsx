@@ -1,6 +1,7 @@
 var React = require('react');
 var TimerActions = require('../actions/TimerActions');
 var TopicStore = require('../stores/TopicStore');
+var TopicConstants = require('../constants/TopicConstants');
 var Page = require('./Page.jsx').Page;
 var Nav = require('./Nav.jsx');
 var Topic = require('./Topic.jsx');
@@ -21,7 +22,7 @@ module.exports = React.createClass({
   // 編集モードに切り替え
   edit: function(e){
     if (e) { e.preventDefault(); }
-    var value = this.props.topics.join("\n");
+    var value = TopicConstants.topic_format + "\n" + this.props.topics.join("\n");
     this.setState({
       editting: true,
       formText: value,
@@ -38,7 +39,11 @@ module.exports = React.createClass({
   onSubmit: function() {
     this.setState({ editting: false });
     if (this.state.beforeEdit != this.state.formText) {
-      TimerActions.updateTopics( this.state.formText );
+      var text = this.state.formText
+      text = text.replace(TopicConstants.topic_format, '')
+      text = text.replace(TopicConstants.total_regex, '');
+      text += '\n0,' + TopicConstants.total_description
+      TimerActions.updateTopics( text );
     }
   },
 
@@ -52,17 +57,22 @@ module.exports = React.createClass({
   render: function(){
     // 編集時はテキストエリアを表示
     if (this.state.editting) {
-      var placeholder = 'ここにトピックを入力';
+      var placeholder = '「分:秒,トピック名」の形式でトピックを入力します。\n\n　※「秒」と「トピック名」は省略可能です。';
       var content = (
         <textarea onChange={this.onUpdateForm} value={this.state.formText} ref='editForm' onBlur={this.onSubmit} placeholder={placeholder} />
       );
     }
     // 編集時以外はトピック一覧を表示
     else {
-      var topics = this.props.topics.map(function(topic){ return <Topic topic={topic} key={topic.key} edit={this.edit} />; }, this);
+      var topics = this.props.topics.map(function(topic){ return <Topic topic={topic} key={topic.key} edit={this.edit} topics={this.props.topics} />; }, this);
       if ( topics.length ) {
         var content = (
           <table>
+            <tr className='topic'>
+              <td className='header'></td>
+              <td className='header'>{TopicConstants.header}</td>
+              <td className='header'></td>
+            </tr>
             {topics}
           </table>
         );
@@ -77,7 +87,6 @@ module.exports = React.createClass({
           <h2>議題</h2>
           {content}
         </div>
-        <div className="topic_description">【説明】残り時間&nbsp;/&nbsp;実際に使った時間&nbsp;/&nbsp;予定時間&nbsp;&nbsp;議題</div>
       </Page>
     );
   },
