@@ -48,11 +48,13 @@ ___
 
 [Node.js 公式ページ](https://nodejs.org/ja/download/releases/)から Node.js 8.x をダウンロードしてインストールします。
 
-[TopicTimer](https://github.com/manba036/TopicTimer)を git clone または zip をダウンロードするなどします。
+[TopicTimer](https://github.com/manba036/TopicTimer)を git clone または zip をダウンロード＆解凍するなどします。
 
 スタートメニューから"Node.js"→"Node.js command prompt"を起動します。
 
-```cmd
+```bash
+cd TopicTimer
+
 npm install -D
 npx gulp build
 ```
