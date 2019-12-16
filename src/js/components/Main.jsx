@@ -4,6 +4,7 @@ var Page = require('./Page.jsx').Page;
 var Nav = require('./Nav.jsx');
 var Controller = require('./Controller.jsx');
 var TimerActions = require('../actions/TimerActions');
+var TopicConstants = require('../constants/TopicConstants');
 
 module.exports = React.createClass({
 
@@ -28,17 +29,17 @@ module.exports = React.createClass({
       <Page name='main' className={over}>
         <div className='topicInfo'>
           <div className='description'>{selected ? selected.description : ''}</div>
-          <div className='entireTime'>{selected ? selected.entire.toString() : ''}</div>
+          <div className='entireTime'><div className='tooltip_under'><span>{selected ? selected.entire.toString() : ''}</span><div className='tooltip_under_description'>予定時間</div></div></div>
         </div>
         <Nav current='main' />
-        {selected ? <div className='total'><span className={total_over}>合計&nbsp;{total_entire}/{total_elapsed}/{total_remain}</span></div> : ''}
+        {selected ? <div className='total'><div className='tooltip_above'><span className={total_over}>合計&nbsp;{total_entire}/{total_elapsed}/{total_remain}</span><div className='tooltip_above_description'>{TopicConstants.header}</div></div></div> : ''}
         {selected ? <Controller topic={selected} total={this.props.total} prev={true} stop={false} next={true}/> : ''}
         <div className='bell'>
           <a className={this.props.bell ? 'on' : 'off'} onClick={this.toggleBell}>
             <span className='popover'>Bell</span>
           </a>
         </div>
-        <div className='remainTime'>{selected ? selected.remain.toString() : '00:00'}</div>
+        <div className='remainTime'><div className='tooltip_left'><span>{selected ? selected.remain.toString() : '00:00'}</span><div className='tooltip_left_description'>残り時間</div></div></div>
       </Page>
     );
   }

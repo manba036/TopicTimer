@@ -216,6 +216,121 @@ html, body {
     .off { @include icon('bell-slash'); }
   }
 
+  .tooltip_above {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .tooltip_above span {
+    margin:0;
+    padding:0;
+  }
+
+  .tooltip_above_description {
+    display: none;
+    position: absolute;
+    padding: 15px;
+    font-size: 20px;
+    border-radius: 15px;
+    white-space: nowrap;
+    color: #fff;
+    background: #999;
+  }
+
+  .tooltip_above_description:before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    border: 20px solid transparent;
+    border-top: 20px solid #999;
+    margin-left: -20px;
+  }
+
+  .tooltip_above:hover .tooltip_above_description {
+    display: inline-block;
+    top: -80px;
+    left: 0px;
+  }
+
+  .tooltip_left {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .tooltip_left span {
+    margin:0;
+    padding:0;
+  }
+
+  .tooltip_left_description {
+    display: none;
+    position: absolute;
+    padding: 15px;
+    font-size: 20px;
+    border-radius: 15px;
+    white-space: nowrap;
+    color: #fff;
+    background: #999;
+  }
+
+  .tooltip_left_description:before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 135px;
+    border: 10px solid transparent;
+    border-top: 20px solid #999;
+    margin-left: -20px;
+    transform: rotateZ(270deg);
+  }
+
+  .tooltip_left:hover .tooltip_left_description {
+    display: inline-block;
+    top: 50%;
+    left: -150px;
+  }
+
+  .tooltip_under {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+  }
+
+  .tooltip_under span {
+    margin:0;
+    padding:0;
+  }
+
+  .tooltip_under_description {
+    display: none;
+    position: absolute;
+    padding: 15px;
+    font-size: 20px;
+    border-radius: 15px;
+    white-space: nowrap;
+    color: #fff;
+    background: #999;
+  }
+
+  .tooltip_under_description:before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    right: 40px;
+    border: 20px solid transparent;
+    border-top: 20px solid #999;
+    margin-left: -20px;
+    transform: rotateZ(180deg);
+  }
+
+  .tooltip_under:hover .tooltip_under_description {
+    display: inline-block;
+    top: 80px;
+    left: 0px;
+  }
 }
 
 #setting {
@@ -258,7 +373,7 @@ html, body {
     }
 
     .header {
-      font-size: 0.8em;
+      font-size: 0.5em;
       text-align: center;
     }
 
