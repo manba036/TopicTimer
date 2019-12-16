@@ -1,6 +1,6 @@
 # Topic Timer
 
-ミーティングやプレゼンテーションでのタイムキーピングのためのアプリです。
+ミーティングやプレゼンテーションでのタイムキーピングのためのアプリです。  
 決められた時間通りに物事を進めたいという場合にご活用ください。
 
 ## Usage
@@ -19,9 +19,11 @@
 15
 ```
 
-入力されたトピック情報は ~~Cookie~~ localStorage に保持されます。削除したい場合は入力エリアを空にして保存してください。
+入力されたトピック情報は localStorage に保持されます。  
+削除したい場合は入力エリアを空にして保存してください。
 
-タイマー画面右下のサウンド設定が ON になっていると、残り時間が 03:00※, 01:00, 00:00 になったときに音が鳴ります。時間オーバーになった場合は1分毎に音が鳴ります。  
+タイマー画面右下のサウンド設定が ON になっていると、残り時間が 03:00※, 01:00, 00:00 になったときに音が鳴ります。  
+時間オーバーになった場合は1分毎に音が鳴ります。  
 
 ※03:00の音は予定時間が06:00以上の場合に有効
 
@@ -42,15 +44,11 @@ npm install -D
 npx gulp build
 ```
 
-___
-
 ## manba036 追記 for Windows
 
-[Node.js 公式ページ](https://nodejs.org/ja/download/releases/)から Node.js 8.x をダウンロードしてインストールします。
-
-[TopicTimer](https://github.com/manba036/TopicTimer)を git clone または zip をダウンロード＆解凍するなどします。
-
-スタートメニューから"Node.js"→"Node.js command prompt"を起動します。
+[Node.js 公式ページ](https://nodejs.org/ja/download/releases/)から Node.js 8.x をダウンロードしてインストールします。  
+[TopicTimer](https://github.com/manba036/TopicTimer)を git clone または zip をダウンロード＆解凍するなどします。  
+スタートメニューから"Node.js"→"Node.js command prompt"を起動して、TopicTimerの実行環境を構築します。
 
 ```bash
 cd TopicTimer
@@ -58,5 +56,3 @@ cd TopicTimer
 npm install -D
 npx gulp build
 ```
-
-___
