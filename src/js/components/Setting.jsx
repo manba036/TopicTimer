@@ -22,7 +22,10 @@ module.exports = React.createClass({
   // 編集モードに切り替え
   edit: function(e){
     if (e) { e.preventDefault(); }
-    var value = TopicConstants.topic_format + "\n" + this.props.topics.join("\n");
+    var value = this.props.topics.join("\n");
+    if (value != "") {
+      value = TopicConstants.topic_format + "\n" + value;
+    }
     this.setState({
       editting: true,
       formText: value,
@@ -42,7 +45,10 @@ module.exports = React.createClass({
       var text = this.state.formText
       text = text.replace(TopicConstants.topic_format, '')
       text = text.replace(TopicConstants.total_regex, '');
-      text += '\n0,' + TopicConstants.total_description
+      text = text.trim();
+      if (text != '') {
+        text += '\n0,' + TopicConstants.total_description
+      }
       TimerActions.updateTopics( text );
     }
   },

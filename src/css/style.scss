@@ -181,19 +181,6 @@ html, body {
         margin-right: .3em;
       }
     }
-
-    .total {
-      //@include icon('hour-glass') {
-      //  margin-right: .3em;
-      //}
-    }
-
-    .total_over {
-      //@include icon('hour-glass') {
-      //  margin-right: .3em;
-      //}
-      color: #f33;
-    }
   }
 
   .controller {
@@ -202,6 +189,19 @@ html, body {
     position: absolute;
     bottom: .2em;
     left: .5em;
+  }
+
+  .total {
+    color: #999;
+    position: absolute;
+    bottom: .2em;
+    left: 0;
+    right: 0;
+    text-align: center;
+
+    .over {
+      color: #f33;
+    }
   }
 
   .bell {

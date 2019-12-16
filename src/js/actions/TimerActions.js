@@ -15,10 +15,14 @@ module.exports = {
 
   // トピック一覧を更新する
   updateTopics: function(str) {
+    var topics = this._parseTopics(str);
     AppDispatcher.dispatch({
       actionType: TimerConstants.UPDATE_TOPICS,
-      topics: this._parseTopics(str)
+      topics: topics
     });
+    if (topics.length >= 2) {
+      this.setTopic(topics[0], topics[topics.length - 1]);
+    }
   },
 
   // トピックをセットする
@@ -131,16 +135,18 @@ module.exports = {
       })
       .filter(function(v){ return !! v }); // パースできなかった行を除外
     var total = topics.find(topic => topic.description === TopicConstants.total_description);
-    total.entire._time = 0;
-    total.elapsed._time = 0;
-    total.remain._time = 0;
-    topics.forEach(function(topic) {
-      if (topic.description !== total.description) {
-        total.entire._time += topic.entire._time;
-        total.elapsed._time += topic.elapsed._time;
-        total.remain._time += topic.remain._time;
-      }
-    });
+    if (total) {
+      total.entire._time = 0;
+      total.elapsed._time = 0;
+      total.remain._time = 0;
+      topics.forEach(function(topic) {
+        if (topic.description !== total.description) {
+          total.entire._time += topic.entire._time;
+          total.elapsed._time += topic.elapsed._time;
+          total.remain._time += topic.remain._time;
+        }
+      });
+    }
     return topics;
   },
 

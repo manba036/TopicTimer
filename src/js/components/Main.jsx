@@ -19,16 +19,19 @@ module.exports = React.createClass({
 
   render: function() {
     var selected = this.props.selected;
-    var over        = ( selected         &&         selected.remain.isOver() ) ? 'over'       : '';
-    var total_class = ( this.props.total && this.props.total.remain.isOver() ) ? 'total_over' : 'total';
+    var over       = ( selected         &&         selected.remain.isOver() ) ? 'over' : '';
+    var total_over = ( this.props.total && this.props.total.remain.isOver() ) ? 'over' : '';
+    var total_entire  = this.props.total ? this.props.total.entire.toString()  : '';
+    var total_elapsed = this.props.total ? this.props.total.elapsed.toString() : '';
+    var total_remain  = this.props.total ? this.props.total.remain.toString()  : '';
     return (
       <Page name='main' className={over}>
         <div className='topicInfo'>
           <div className='description'>{selected ? selected.description : ''}</div>
           <div className='entireTime'>{selected ? selected.entire.toString() : ''}</div>
-          <div className={total_class}>合計{this.props.total ? this.props.total.elapsed.toString() : ''}</div>
         </div>
         <Nav current='main' />
+        {selected ? <div className='total'><span className={total_over}>合計&nbsp;{total_entire}/{total_elapsed}/{total_remain}</span></div> : ''}
         {selected ? <Controller topic={selected} total={this.props.total} prev={true} stop={false} next={true}/> : ''}
         <div className='bell'>
           <a className={this.props.bell ? 'on' : 'off'} onClick={this.toggleBell}>
