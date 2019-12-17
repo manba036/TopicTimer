@@ -17,10 +17,10 @@ module.exports = React.createClass({
           <h3>お問い合わせ</h3>
           <p>
             不具合・改善要望などありましたら、
-            <a href='https://github.com/manba036/TopicTimer' target='_blank'>GitHub</a> のIssueに書いてください。
+            <a href='https://github.com/manba036/TopicTimer' target='_blank' tabIndex='-1'>GitHub</a> のIssueに書いてください。
           </p>
           <p>
-            本家は<a href='https://github.com/hoto17296/TopicTimer' target='_blank'>こちら</a>です。
+            本家は<a href='https://github.com/hoto17296/TopicTimer' target='_blank' tabIndex='-1'>こちら</a>です。
           </p>
         </div>
       </Page>

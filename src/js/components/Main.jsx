@@ -11,7 +11,70 @@ module.exports = React.createClass({
   propTypes: {
     selected: React.PropTypes.instanceOf(Topic),
     total: React.PropTypes.instanceOf(Topic),
+    memo:  React.PropTypes.string,
     bell: React.PropTypes.bool
+  },
+
+  getInitialState: function() {
+    return {
+      editting: false,
+      formText: '',
+      beforeEdit: ''
+    };
+  },
+
+  // 編集モードに切り替え
+  edit: function(e){
+    if (e) { e.preventDefault(); }
+    var value = this.props.memo;
+    this.setState({
+      editting: true,
+      formText: value,
+      beforeEdit: value
+    });
+  },
+
+  // 編集中のテキストを保持する
+  onUpdateForm: function(e) {
+    this.setState({ formText: e.target.value });
+  },
+
+  // Enter/Escキー判定
+  onKeyDown: function(e) {
+    var keyCode = false;
+    if (e) event = e;
+    if (event) {
+      if (event.keyCode) {
+        keyCode = event.keyCode;
+      } else if (event.which) {
+        keyCode = event.which;
+      }
+    }
+    if (keyCode == 13 || keyCode == 27) {
+      if (this.refs.editForm) {
+        this.refs.editForm.getDOMNode().focus();
+      }
+      this.onSubmit();
+    }
+  },
+
+  // 編集完了したらトピック一覧を更新する
+  onSubmit: function() {
+    this.setState({ editting: false });
+    var memo = this.state.formText;
+    this.props.memo = memo;
+    var selected = this.props.selected;
+    var total = this.props.total;
+    if (selected && memo !== undefined) {
+      TimerActions.setMemo(TopicConstants.memo_label + ',' + total.elapsed + ',' + selected.description + ',' + selected.elapsed + ',' + memo + '\n');
+    }
+  },
+
+  // 編集開始したらフォーカスする
+  componentDidUpdate: function(){
+    if (this.refs.editForm) {
+      this.refs.editForm.getDOMNode().focus();
+    }
   },
 
   toggleBell: function() {
@@ -25,6 +88,22 @@ module.exports = React.createClass({
     var total_entire  = this.props.total ? this.props.total.entire.toString()  : '';
     var total_elapsed = this.props.total ? this.props.total.elapsed.toString() : '';
     var total_remain  = this.props.total ? this.props.total.remain.toString()  : '';
+
+    if (this.state.editting) {
+      var placeholder = 'メモを入力します';
+      var content = (
+        <textarea onChange={this.onUpdateForm} value={this.state.formText} ref='editForm' onBlur={this.onSubmit} onKeyDown={this.onKeyDown} placeholder={placeholder} />
+      );
+    }
+    // 編集時以外はトピック一覧を表示
+    else {
+      if (this.props.memo) {
+        var content = <span className={over} onClick={this.edit} onKeyDown={this.edit} tabIndex="0">{this.props.memo}</span>;
+      } else {
+        var content = <span className='empty' onClick={this.edit} onKeyDown={this.edit} tabIndex="0">メモ入力</span>;
+      }
+    }
+
     return (
       <Page name='main' className={over}>
         <div className='topicInfo'>
@@ -40,6 +119,7 @@ module.exports = React.createClass({
           </a>
         </div>
         <div className='remainTime'><div className='tooltip_left'><span>{selected ? selected.remain.toString() : '00:00'}</span><div className='tooltip_left_description'>残り時間</div></div></div>
+        <div className='memo'>{content}</div>
       </Page>
     );
   }

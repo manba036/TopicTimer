@@ -36,6 +36,21 @@ module.exports = {
     });
   },
 
+  // メモをセットする
+  setMemo: function(memo) {
+    AppDispatcher.dispatch({
+      actionType: TimerConstants.UPDATE_MEMOS,
+      memo: memo,
+    });
+  },
+
+  clearMemos: function() {
+    AppDispatcher.dispatch({
+      actionType: TimerConstants.RESET_MEMOS,
+    });
+  },
+
+
   // カウントを開始する
   startCounting: function(topic, total){
     if (topic) {
@@ -134,7 +149,7 @@ module.exports = {
         }
       })
       .filter(function(v){ return !! v }); // パースできなかった行を除外
-    var total = topics.find(topic => topic.description === TopicConstants.total_description);
+    var total = topics.find(topic => topic.description === TopicConstants.total_label);
     if (total) {
       total.entire._time = 0;
       total.elapsed._time = 0;

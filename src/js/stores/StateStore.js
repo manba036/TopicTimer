@@ -9,6 +9,7 @@ var _states = {
   selected: null,
   counting: false,
   bell: true,
+  memos: '',
 };
 
 var setStates = function(key, val) {
@@ -64,6 +65,19 @@ AppDispatcher.register(function(action) {
         setStates({ selected: selected });
         StateStore.emitChange();
       }
+      break;
+
+    case TimerConstants.UPDATE_MEMOS:
+      if (action.memo) {
+        var memos = _states.memos + action.memo;
+        setStates({ memos: memos });
+        StateStore.emitChange();
+      }
+      break;
+
+    case TimerConstants.RESET_MEMOS:
+      setStates({ memos: '' });
+      StateStore.emitChange();
       break;
 
     case TimerConstants.TOGGLE_BELL:

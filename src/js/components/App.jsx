@@ -31,6 +31,11 @@ module.exports = React.createClass({
     if (topics) {
       TimerActions.updateTopics( topics, null );
     }
+    var memos = Cookie.get('memos');
+    if (memos) {
+      TimerActions.clearMemos();
+      TimerActions.setMemo(memos);
+    }
   },
   componentWillUnmount: function() {
     TopicStore.removeChangeListener(this._onChange);
@@ -39,6 +44,7 @@ module.exports = React.createClass({
 
   componentDidUpdate: function(){
     Cookie.set('topics', TopicStore.get().join("\n"));
+    Cookie.set('memos', StateStore.get().memos);
   },
 
   // Store に変更があった時の処理
@@ -52,7 +58,7 @@ module.exports = React.createClass({
   render: function() {
     return (
       <div id='content'>
-        <Main {...this.state.states} total={this.state.topics.find(topic => topic.description === TopicConstants.total_description)}/>
+        <Main {...this.state.states} total={this.state.topics.find(topic => topic.description === TopicConstants.total_label)}/>
         <Setting topics={this.state.topics} />
         <Usage />
         <Info />

@@ -1,6 +1,11 @@
 module.exports = {
   topic_format:      '予定時間,使用時間,残り時間,議題',
   header:            '予定時間 / 使用時間 / 残り時間',
-  total_description: '合計 ',
-  total_regex:       /\n.*,合計 /
+  total_label:       '合計 ',
+  total_regex:       /.*,合計 /g,
+  memos_header:      '以下、メモ',
+  topics_regex:      /以下、メモ[\s\S]*$/,
+  memos_regex:       /^[\s\S]*以下、メモ/,
+  memo_format:      'タイプ,全体経過時間,議題,経過時間,コメント',
+  memo_label:        'メモ',
 }

@@ -15,7 +15,7 @@ module.exports = React.createClass({
     return (
       <tr className='topic'>
         <td>
-          <Controller topic={topic} total={this.props.topics.find(topic => topic.description === TopicConstants.total_description)}/>
+          <Controller topic={topic} total={this.props.topics.find(topic => topic.description === TopicConstants.total_label)}/>
         </td>
         <td className='time' onClick={this.props.edit}>
           {topic.entire.toString()}/<span className={over}>{topic.elapsed.toString()}/{topic.remain.toString()}</span>
