@@ -11,7 +11,6 @@ module.exports = React.createClass({
   propTypes: {
     selected: React.PropTypes.instanceOf(Topic),
     total: React.PropTypes.instanceOf(Topic),
-    memo:  React.PropTypes.string,
     bell: React.PropTypes.bool
   },
 
@@ -19,30 +18,31 @@ module.exports = React.createClass({
     return {
       editting: false,
       formText: '',
-      beforeEdit: ''
     };
   },
 
   // 編集モードに切り替え
   edit: function(e){
     if (e) { e.preventDefault(); }
-    var value = this.props.memo;
+    var value = '';
     this.setState({
       editting: true,
       formText: value,
-      beforeEdit: value
     });
   },
 
   // 編集中のテキストを保持する
   onUpdateForm: function(e) {
-    this.setState({ formText: e.target.value });
+    this.setState({ formText: e.target.value.trim() });
   },
 
   // Enter/Escキー判定
   onKeyDown: function(e) {
     var keyCode = false;
-    if (e) event = e;
+    if (e) {
+      event = e;
+      arg = e.currentTarget.getAttribute('data-arg');
+    }
     if (event) {
       if (event.keyCode) {
         keyCode = event.keyCode;
@@ -50,11 +50,14 @@ module.exports = React.createClass({
         keyCode = event.which;
       }
     }
-    if (keyCode == 13 || keyCode == 27) {
-      if (this.refs.editForm) {
-        this.refs.editForm.getDOMNode().focus();
+    if (arg == 'submit') {
+      if (keyCode == 13 || keyCode == 27) {
+        this.onSubmit();
       }
-      this.onSubmit();
+    } else if (arg == 'edit') {
+      if (keyCode == 13) {
+        this.edit();
+      }
     }
   },
 
@@ -62,7 +65,6 @@ module.exports = React.createClass({
   onSubmit: function() {
     this.setState({ editting: false });
     var memo = this.state.formText;
-    this.props.memo = memo;
     var selected = this.props.selected;
     var total = this.props.total;
     if (selected && memo !== undefined) {
@@ -90,18 +92,14 @@ module.exports = React.createClass({
     var total_remain  = this.props.total ? this.props.total.remain.toString()  : '';
 
     if (this.state.editting) {
-      var placeholder = 'メモを入力します';
+      var placeholder = 'Enter or Esc で入力完了';
       var content = (
-        <textarea onChange={this.onUpdateForm} value={this.state.formText} ref='editForm' onBlur={this.onSubmit} onKeyDown={this.onKeyDown} placeholder={placeholder} />
+        <textarea onChange={this.onUpdateForm} value={this.state.formText} ref='editForm' onBlur={this.onSubmit} onKeyDown={this.onKeyDown} data-arg="submit" placeholder={placeholder} />
       );
     }
-    // 編集時以外はトピック一覧を表示
+    // 編集時以外は「メモ入力」を表示
     else {
-      if (this.props.memo) {
-        var content = <span className={over} onClick={this.edit} onKeyDown={this.edit} tabIndex="0">{this.props.memo}</span>;
-      } else {
-        var content = <span className='empty' onClick={this.edit} onKeyDown={this.edit} tabIndex="0">メモ入力</span>;
-      }
+      var content = <span className='empty' onClick={this.edit} onKeyDown={this.onKeyDown} data-arg="edit" tabIndex="1">メモ入力</span>;
     }
 
     return (
