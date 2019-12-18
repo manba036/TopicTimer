@@ -10,6 +10,7 @@ var TopicConstants = require('../constants/TopicConstants');
 
 var Main = require('./Main.jsx');
 var Setting = require('./Setting.jsx');
+var Memos = require('./Memos.jsx');
 var Usage = require('./Usage.jsx');
 var Info = require('./Info.jsx');
 
@@ -60,6 +61,7 @@ module.exports = React.createClass({
       <div id='content'>
         <Main {...this.state.states} total={this.state.topics.find(topic => topic.description === TopicConstants.total_label)}/>
         <Setting topics={this.state.topics} />
+        <Memos />
         <Usage />
         <Info />
       </div>

@@ -8,7 +8,7 @@ String.prototype.capitalizeFirstLetter = function() {
 module.exports = React.createClass({
   getDefaultProps: function() {
     return {
-      pages: ['main', 'setting', 'usage', 'info'],
+      pages: ['main', 'setting', 'memos', 'usage', 'info'],
     };
   },
   render: function() {

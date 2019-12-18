@@ -68,7 +68,7 @@ module.exports = React.createClass({
     var selected = this.props.selected;
     var total = this.props.total;
     if (selected && memo !== undefined) {
-      TimerActions.setMemo(TopicConstants.memo_label + ',' + total.elapsed + ',' + selected.description + ',' + selected.elapsed + ',' + memo + '\n');
+      TimerActions.setMemo(total.elapsed + ',' + selected.description + ',' + selected.elapsed + ',' + memo + '\n');
     }
   },
 

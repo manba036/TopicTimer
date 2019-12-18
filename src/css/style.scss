@@ -107,6 +107,7 @@ html, body {
 }
 .main    { @include nav-link('hour-glass'); }
 .setting { @include nav-link('cog');        }
+.memos   { @include nav-link('bubbles');    }
 .usage   { @include nav-link('question');   }
 .info    { @include nav-link('info');       }
 
@@ -431,6 +432,60 @@ html, body {
 
     .description {
       cursor: pointer;
+      text-align: left;
+    }
+  }
+}
+
+#memos {
+  @include page;
+
+  background-color: #f93;
+
+  h2 {
+    @include icon('bubbles') {
+      margin-right: .3em;
+    }
+  }
+
+  textarea {
+    width: 100%;
+    height: 70vh;
+    padding: .5em;
+    font-size: 2rem;
+    color: #333;
+    border: 0;
+  }
+
+  .empty {
+    text-align: center;
+    padding: .5em;
+    cursor: pointer;
+    background-color: rgba(255,255,255,0);
+    transition: background-color .2s linear;
+
+    &:hover {
+      background-color: rgba(255,255,255,0.2);
+    }
+  }
+
+  .memo_table {
+    .header {
+      font-size: .5em;
+      text-align: center;
+    }
+
+    .time {
+      cursor: pointer;
+      font-family: monospace;
+      font-size: .8em;
+      text-align: center;
+      padding: 0 .5em;
+    }
+
+    .text {
+      cursor: pointer;
+      font-size: .8em;
       text-align: left;
     }
   }
