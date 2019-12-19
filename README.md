@@ -57,6 +57,10 @@ cd TopicTimer
 
 npm install -D
 npx gulp build
+pip install -r requirements.txt
+./server.py
+
+# Goto http://localhost:3000
 ```
 
 ## manba036 追記 for Windows
@@ -70,4 +74,8 @@ cd TopicTimer
 
 npm install -D
 npx gulp build
+pip install -r requirements.txt
+python server.py
+
+# Goto http://localhost:3000
 ```

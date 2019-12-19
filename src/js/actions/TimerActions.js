@@ -6,10 +6,10 @@ var Topic = require('../utils/topic');
 var sha1 = require('sha1');
 
 var _timer = null;
-var audio3 = new Audio('./lib/3.mp3');
-var audio1 = new Audio('./lib/1.mp3');
-var audio0 = new Audio('./lib/0.mp3');
-var audioX = new Audio('./lib/over.mp3');
+var audio3 = new Audio('./static/3.mp3');
+var audio1 = new Audio('./static/1.mp3');
+var audio0 = new Audio('./static/0.mp3');
+var audioX = new Audio('./static/over.mp3');
 
 module.exports = {
 

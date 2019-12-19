@@ -6,7 +6,7 @@ var config = {
     entries: ['./src/js/index.jsx'],
     transform: [reactify]
   },
-  dest: './lib'
+  dest: './static'
 };
 
 gulp.task('watch', ['build'], function(){
