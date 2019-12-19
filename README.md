@@ -76,8 +76,13 @@ cd TopicTimer
 
 npm install -D
 npx gulp build
-pip install -r requirements.txt
 python server.py
 
 # Goto http://localhost:3000
+```
+
+FlaskはAnacondaに同梱されていると思いますが、万が一、「Flaskがない」と怒られた場合は下記コマンドを実行してください
+
+```bash
+pip install -r requirements.txt
 ```
