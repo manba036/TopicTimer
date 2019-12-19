@@ -66,6 +66,8 @@ pip install -r requirements.txt
 ## manba036 追記 for Windows
 
 [Node.js 公式ページ](https://nodejs.org/ja/download/releases/)から Node.js 8.x をダウンロードしてインストールします。  
+[Anacondaのページ](https://www.anaconda.com/distribution/#download-section)から Python 3.x のインストーラをダウンロードしてインストールします。  
+(インストーラの Advanced Options で Add Anaconda to my PATH environment variable をチェックしておきます)  
 [TopicTimer](https://github.com/manba036/TopicTimer)を git clone または zip をダウンロード＆解凍するなどします。  
 スタートメニューから"Node.js"→"Node.js command prompt"を起動して、TopicTimerの実行環境を構築します。
 
