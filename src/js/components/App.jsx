@@ -1,65 +1,69 @@
-var React = require('react');
+import React from "react";
+import Main from "./Main.jsx";
+import Setting from "./Setting.jsx";
+import Memos from "./Memos.jsx";
+import Usage from "./Usage.jsx";
+import Info from "./Info.jsx";
 
-var Cookie = require('../utils/cookie');
+import Cookie from "../utils/cookie";
+import TimerActions from "../actions/TimerActions";
+import TopicConstants from "../constants/TopicConstants";
+import TopicStore from "../stores/TopicStore";
+import StateStore from "../stores/StateStore";
 
-var TimerActions = require('../actions/TimerActions');
-
-var TopicStore = require('../stores/TopicStore');
-var StateStore = require('../stores/StateStore');
-var TopicConstants = require('../constants/TopicConstants');
-
-var Main = require('./Main.jsx');
-var Setting = require('./Setting.jsx');
-var Memos = require('./Memos.jsx');
-var Usage = require('./Usage.jsx');
-var Info = require('./Info.jsx');
-
-module.exports = React.createClass({
-
-  getInitialState: function(){
-    return {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this._onChange = this._onChange.bind(this);
+    this.state = {
       topics: [],
       states: {}
     };
-  },
+  }
+
+  // Store に変更があった時の処理
+  _onChange() {
+    this.setState({
+      topics: TopicStore.get(),
+      states: StateStore.get()
+    });
+  }
 
   // Store の変更を監視
-  componentDidMount: function() {
+  componentDidMount() {
     TopicStore.addChangeListener(this._onChange);
     StateStore.addChangeListener(this._onChange);
 
-    var topics = Cookie.get('topics');
+    var topics = Cookie.get("topics");
     if (topics) {
-      TimerActions.updateTopics( topics, null );
+      TimerActions.updateTopics(topics, null);
     }
-    var memos = Cookie.get('memos');
+    var memos = Cookie.get("memos");
     if (memos) {
       TimerActions.clearMemos();
       TimerActions.setMemo(memos);
     }
-  },
-  componentWillUnmount: function() {
+  }
+
+  componentWillUnmount() {
     TopicStore.removeChangeListener(this._onChange);
     StateStore.removeChangeListener(this._onChange);
-  },
+  }
 
-  componentDidUpdate: function(){
-    Cookie.set('topics', TopicStore.get().join("\n"));
-    Cookie.set('memos', StateStore.get().memos);
-  },
+  componentDidUpdate() {
+    Cookie.set("topics", TopicStore.get().join("\n"));
+    Cookie.set("memos", StateStore.get().memos);
+  }
 
-  // Store に変更があった時の処理
-  _onChange: function() {
-    this.setState({
-      topics: TopicStore.get(),
-      states: StateStore.get(),
-    });
-  },
-
-  render: function() {
+  render() {
     return (
-      <div id='content'>
-        <Main {...this.state.states} total={this.state.topics.find(topic => topic.description === TopicConstants.total_label)}/>
+      <div id="content">
+        <Main
+          {...this.state.states}
+          total={this.state.topics.find(
+            topic => topic.description === TopicConstants.total_label
+          )}
+        />
         <Setting topics={this.state.topics} />
         <Memos />
         <Usage />
@@ -67,5 +71,6 @@ module.exports = React.createClass({
       </div>
     );
   }
+}
 
-});
+export default App;

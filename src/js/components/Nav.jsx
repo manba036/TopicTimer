@@ -1,26 +1,36 @@
-var React = require('react');
-var Link = require('./Page.jsx').Link;
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React from "react";
+import { Link } from "react-scroll";
 
+// eslint-disable-next-line no-extend-native
 String.prototype.capitalizeFirstLetter = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
-}
+};
 
-module.exports = React.createClass({
-  getDefaultProps: function() {
-    return {
-      pages: ['main', 'setting', 'memos', 'usage', 'info'],
-    };
-  },
-  render: function() {
-    var links = this.props.pages.map(function(page){
-      if (page != this.props.current) {
+class Nav extends React.Component {
+  render() {
+    // eslint-disable-next-line array-callback-return
+    var links = this.props.pages.map(function(page, index) {
+      if (page !== this.props.current) {
         return (
-          <Link to={page} key={page}>
-            <span className='popover'>{page.capitalizeFirstLetter()}</span>
+          <Link
+            key={index}
+            className={page}
+            to={page}
+            smooth={true}
+            duration={400}
+          >
+            <span className="popover">{page.capitalizeFirstLetter()}</span>
           </Link>
         );
       }
     }, this);
-    return <div className='nav'>{links}</div>;
+    return <div className="nav">{links}</div>;
   }
-});
+}
+
+Nav.defaultProps = {
+  pages: ["main", "setting", "memos", "usage", "info"]
+};
+
+export default Nav;

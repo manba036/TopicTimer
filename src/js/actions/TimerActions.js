@@ -1,18 +1,17 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var TimerConstants = require('../constants/TimerConstants');
-var TopicConstants = require('../constants/TopicConstants');
-var StateStore = require('../stores/StateStore');
-var Topic = require('../utils/topic');
-var sha1 = require('sha1');
+var AppDispatcher = require("../dispatcher/AppDispatcher");
+var TimerConstants = require("../constants/TimerConstants");
+var TopicConstants = require("../constants/TopicConstants");
+var StateStore = require("../stores/StateStore");
+var Topic = require("../utils/topic");
+var sha1 = require("sha1");
 
 var _timer = null;
-var audio3 = new Audio('./static/3.mp3');
-var audio1 = new Audio('./static/1.mp3');
-var audio0 = new Audio('./static/0.mp3');
-var audioX = new Audio('./static/over.mp3');
+var audio3 = new Audio("./static/3.mp3");
+var audio1 = new Audio("./static/1.mp3");
+var audio0 = new Audio("./static/0.mp3");
+var audioX = new Audio("./static/over.mp3");
 
 module.exports = {
-
   // トピック一覧を更新する
   updateTopics: function(str) {
     var topics = this._parseTopics(str);
@@ -32,7 +31,7 @@ module.exports = {
     }
     AppDispatcher.dispatch({
       actionType: TimerConstants.UPDATE_STATES,
-      states: { selected: topic },
+      states: { selected: topic }
     });
   },
 
@@ -40,19 +39,18 @@ module.exports = {
   setMemo: function(memo) {
     AppDispatcher.dispatch({
       actionType: TimerConstants.UPDATE_MEMOS,
-      memo: memo,
+      memo: memo
     });
   },
 
   clearMemos: function() {
     AppDispatcher.dispatch({
-      actionType: TimerConstants.RESET_MEMOS,
+      actionType: TimerConstants.RESET_MEMOS
     });
   },
 
-
   // カウントを開始する
-  startCounting: function(topic, total){
+  startCounting: function(topic, total) {
     if (topic) {
       this.setTopic(topic, total);
     }
@@ -61,7 +59,7 @@ module.exports = {
     _timer = setInterval(this.countDown, 1000);
     AppDispatcher.dispatch({
       actionType: TimerConstants.UPDATE_STATES,
-      states: { total: total, counting: true },
+      states: { total: total, counting: true }
     });
   },
 
@@ -71,14 +69,14 @@ module.exports = {
     AppDispatcher.dispatch({
       actionType: TimerConstants.UPDATE_STATES,
       states: {
-        counting: false,
+        counting: false
       }
     });
   },
 
   // カウントを停止する
   stopCounting: function(topic, total) {
-    if ( topic.equal( StateStore.get().selected ) ) {
+    if (topic.equal(StateStore.get().selected)) {
       this.pauseCounting();
     }
     AppDispatcher.dispatch({
@@ -89,7 +87,7 @@ module.exports = {
   },
 
   // カウントダウンする
-  countDown: function(){
+  countDown: function() {
     var state = StateStore.get();
     if (state.selected) {
       AppDispatcher.dispatch({
@@ -99,14 +97,15 @@ module.exports = {
         callback: function(remainTime, entireTime) {
           if (remainTime === 1 && state.bell) {
             audio0.play();
-          }
-          else if (remainTime === (1*60+1) && state.bell) {
+          } else if (remainTime === 1 * 60 + 1 && state.bell) {
             audio1.play();
-          }
-          else if (entireTime >= (6*60) && remainTime === (3*60+1) && state.bell) {
+          } else if (
+            entireTime >= 6 * 60 &&
+            remainTime === 3 * 60 + 1 &&
+            state.bell
+          ) {
             audio3.play();
-          }
-          else if (remainTime < 0 && (remainTime % 60) === 0 && state.bell) {
+          } else if (remainTime < 0 && remainTime % 60 === 0 && state.bell) {
             audioX.play();
           }
         }
@@ -115,24 +114,29 @@ module.exports = {
   },
 
   // Bell の ON/OFF を切り替える
-  toggleBell: function(){
+  toggleBell: function() {
     AppDispatcher.dispatch({
       actionType: TimerConstants.TOGGLE_BELL
     });
   },
 
   // 文字列の各行をパースしてTopicオブジェクトを生成する
-  _parseTopics: function(str){
+  _parseTopics: function(str) {
     var prev = null;
-    topics = str
-      .split("\n").filter(function(v){ return !! v.trim() }) // 改行で分割して空行を除去
-      .map(function(v, idx){
+    var topics = str
+      .split("\n")
+      .filter(function(v) {
+        return !!v.trim();
+      }) // 改行で分割して空行を除去
+      .map(function(v, idx) {
         try {
           // トピックオブジェクトを生成
           var topic = new Topic(v);
 
           // ユニークキーを設定
-          topic.key = sha1( JSON.stringify([ topic.entire.toString(), topic.description, idx ]) );
+          topic.key = sha1(
+            JSON.stringify([topic.entire.toString(), topic.description, idx])
+          );
 
           // 前後のトピック情報を設定
           if (prev) {
@@ -145,11 +149,15 @@ module.exports = {
           return topic;
         } catch (e) {
           console.warn(e);
-          return;
+          return null;
         }
       })
-      .filter(function(v){ return !! v }); // パースできなかった行を除外
-    var total = topics.find(topic => topic.description === TopicConstants.total_label);
+      .filter(function(v) {
+        return !!v;
+      }); // パースできなかった行を除外
+    var total = topics.find(
+      topic => topic.description === TopicConstants.total_label
+    );
     if (total) {
       total.entire._time = 0;
       total.elapsed._time = 0;
@@ -167,12 +175,13 @@ module.exports = {
 
   // スムーススクロールする
   _scrollTop: function() {
-    var _id = setInterval(function(){
+    var _id = setInterval(function() {
       var x = document.documentElement.scrollLeft || document.body.scrollLeft;
       var y = document.documentElement.scrollTop || document.body.scrollTop;
-      window.scrollTo(x, y * 15 / 16);
-      if (y == 0) { clearInterval(_id); }
+      window.scrollTo(x, (y * 15) / 16);
+      if (y === 0) {
+        clearInterval(_id);
+      }
     }, 10);
   }
-
 };

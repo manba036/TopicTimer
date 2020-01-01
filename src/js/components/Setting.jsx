@@ -1,31 +1,38 @@
-var React = require('react');
-var TimerActions = require('../actions/TimerActions');
-var TopicStore = require('../stores/TopicStore');
-var StateStore = require('../stores/StateStore');
-var TopicConstants = require('../constants/TopicConstants');
-var Page = require('./Page.jsx').Page;
-var Nav = require('./Nav.jsx');
-var Topic = require('./Topic.jsx');
+import React from "react";
+import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
+import Page from "./Page.jsx";
+import Nav from "./Nav.jsx";
+import TopicRow from "./TopicRow.jsx";
+import TopicConstants from "../constants/TopicConstants";
 
-module.exports = React.createClass({
-  propTypes: {
-    topics: React.PropTypes.array.isRequired
-  },
+import TimerActions from "../actions/TimerActions";
+import StateStore from "../stores/StateStore";
 
-  getInitialState: function() {
-    return {
+class Setting extends React.Component {
+  constructor(props) {
+    super(props);
+    this.edit = this.edit.bind(this);
+    this.onUpdateForm = this.onUpdateForm.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.state = {
       editting: false,
-      formText: '',
-      beforeEdit: ''
+      formText: "",
+      beforeEdit: ""
     };
-  },
+  }
 
   // 編集モードに切り替え
-  edit: function(e){
-    if (e) { e.preventDefault(); }
-    if (StateStore.get().counting) { return; }
+  edit(e) {
+    if (e) {
+      e.preventDefault();
+    }
+    if (StateStore.get().counting) {
+      return;
+    }
     var value = this.props.topics.join("\n");
-    if (value != "") {
+    if (value !== "") {
       value = TopicConstants.topic_format + "\n" + value;
     }
     this.setState({
@@ -33,16 +40,17 @@ module.exports = React.createClass({
       formText: value,
       beforeEdit: value
     });
-  },
+  }
 
   // 編集中のテキストを保持する
-  onUpdateForm: function(e) {
+  onUpdateForm(e) {
     this.setState({ formText: e.target.value });
-  },
+  }
 
   // Escキー判定
-  onKeyDown: function(e) {
+  onKeyDown(e) {
     var keyCode = false;
+    var event = null;
     if (e) event = e;
     if (event) {
       if (event.keyCode) {
@@ -51,70 +59,104 @@ module.exports = React.createClass({
         keyCode = event.which;
       }
     }
-    if (keyCode == 27) {
+    if (keyCode === 27) {
       if (this.refs.editForm) {
-        this.refs.editForm.getDOMNode().focus();
+        //this.refs.editForm.getDOMNode().focus();
+        ReactDOM.findDOMNode(this.refs.editForm).focus();
       }
       this.onSubmit();
     }
-  },
+  }
 
   // 編集完了したらトピック一覧を更新する
-  onSubmit: function() {
+  onSubmit(e) {
     this.setState({ editting: false });
-    if (this.state.beforeEdit != this.state.formText) {
+    if (this.state.beforeEdit !== this.state.formText) {
       var text = this.state.formText;
-      text = text.replace(TopicConstants.topic_format, '');
-      text = text.replace(TopicConstants.total_regex, '');
+      text = text.replace(TopicConstants.topic_format, "");
+      text = text.replace(TopicConstants.total_regex, "");
       text = text.trim();
-      if (text != '') {
-        text += '\n0,' + TopicConstants.total_label
+      if (text !== "") {
+        text += "\n0," + TopicConstants.total_label;
       }
-      TimerActions.updateTopics( text );
+      TimerActions.updateTopics(text);
     }
-  },
+  }
 
   // 編集開始したらフォーカスする
-  componentDidUpdate: function(){
+  componentDidUpdate() {
     if (this.refs.editForm) {
-      this.refs.editForm.getDOMNode().focus();
+      //this.refs.editForm.getDOMNode().focus();
+      ReactDOM.findDOMNode(this.refs.editForm).focus();
     }
-  },
+  }
 
-  render: function(){
+  render() {
+    var content = "";
+    var placeholder = "";
+
     // 編集時はテキストエリアを表示
     if (this.state.editting) {
-      var placeholder = '「分:秒,トピック名」の形式でトピックを入力します。\n\n　※「秒」と「トピック名」は省略可能です。';
-      var content = (
-        <textarea onChange={this.onUpdateForm} value={this.state.formText} ref='editForm' onBlur={this.onSubmit} onKeyDown={this.onKeyDown} placeholder={placeholder} />
+      placeholder =
+        "「分:秒,トピック名」の形式でトピックを入力します。\n\n　※「秒」と「トピック名」は省略可能です。";
+      content = (
+        <textarea
+          onChange={this.onUpdateForm}
+          value={this.state.formText}
+          ref="editForm"
+          onBlur={this.onSubmit}
+          onKeyDown={this.onKeyDown}
+          placeholder={placeholder}
+        />
       );
     }
     // 編集時以外はトピック一覧を表示
     else {
-      var topics = this.props.topics.map(function(topic){ return <Topic topic={topic} key={topic.key} edit={this.edit} topics={this.props.topics} />; }, this);
-      if ( topics.length ) {
-        var content = (
+      var topics = this.props.topics.map(function(topic) {
+        return (
+          <TopicRow
+            topic={topic}
+            key={topic.key}
+            edit={this.edit}
+            topics={this.props.topics}
+          />
+        );
+      }, this);
+      if (topics.length) {
+        content = (
           <table>
-            <tr className='topic'>
-              <td className='header'></td>
-              <td className='header'>{TopicConstants.header}</td>
-              <td className='header'></td>
-            </tr>
-            {topics}
+            <tbody>
+              <tr className="topic">
+                <td className="header"></td>
+                <td className="header">{TopicConstants.header}</td>
+                <td className="header"></td>
+              </tr>
+              {topics}
+            </tbody>
           </table>
         );
       } else {
-        var content = <div className='empty' onClick={this.edit}>クリックしてトピックを入力</div>;
+        content = (
+          <div className="empty" onClick={this.edit}>
+            クリックしてトピックを入力
+          </div>
+        );
       }
     }
     return (
-      <Page name='setting'>
-        <Nav current='setting' />
-        <div className='pageContent'>
+      <Page name="setting">
+        <Nav current="setting" />
+        <div className="pageContent">
           <h2>議題</h2>
           {content}
         </div>
       </Page>
     );
-  },
-});
+  }
+}
+
+Setting.propTypes = {
+  topics: PropTypes.array.isRequired
+};
+
+export default Setting;

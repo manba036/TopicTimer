@@ -1,27 +1,29 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var TimerConstants = require('../constants/TimerConstants');
-var assign = require('object-assign');
+/* eslint-disable array-callback-return */
+var AppDispatcher = require("../dispatcher/AppDispatcher");
+var EventEmitter = require("events").EventEmitter;
+var TimerConstants = require("../constants/TimerConstants");
+var assign = require("object-assign");
 
-var CHANGE_EVENT = 'change';
+var CHANGE_EVENT = "change";
 
 var _states = {
   selected: null,
   counting: false,
   bell: true,
-  memos: '',
+  memos: ""
 };
 
 var setStates = function(key, val) {
-  if (key instanceof Object) { // setStates({ key: val }) の形式で呼ばれた場合
+  if (key instanceof Object) {
+    // setStates({ key: val }) の形式で呼ばれた場合
     _states = assign(_states, key);
-  } else { // setStates(key, val) の形式で呼ばれた場合
+  } else {
+    // setStates(key, val) の形式で呼ばれた場合
     _states[key] = val;
   }
-}
+};
 
 var StateStore = assign({}, EventEmitter.prototype, {
-
   // State一覧を取得する
   get: function() {
     return _states;
@@ -40,13 +42,10 @@ var StateStore = assign({}, EventEmitter.prototype, {
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   }
-
 });
 
 AppDispatcher.register(function(action) {
-
-  switch(action.actionType) {
-
+  switch (action.actionType) {
     case TimerConstants.UPDATE_STATES:
       if (action.states) {
         setStates(action.states);
@@ -57,7 +56,7 @@ AppDispatcher.register(function(action) {
     case TimerConstants.UPDATE_TOPICS:
       if (action.topics && _states.selected) {
         var selected = null;
-        action.topics.map(function(topic){
+        action.topics.map(function(topic) {
           if (topic.equal(_states.selected)) {
             selected = topic;
           }
@@ -76,17 +75,17 @@ AppDispatcher.register(function(action) {
       break;
 
     case TimerConstants.RESET_MEMOS:
-      setStates({ memos: '' });
+      setStates({ memos: "" });
       StateStore.emitChange();
       break;
 
     case TimerConstants.TOGGLE_BELL:
-      setStates({ bell: ! _states.bell });
+      setStates({ bell: !_states.bell });
       StateStore.emitChange();
       break;
 
     default:
-      // no op
+    // no op
   }
 });
 

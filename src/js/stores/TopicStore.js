@@ -1,16 +1,16 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var TimerConstants = require('../constants/TimerConstants');
-var Time = require('../utils/time.js');
-var assign = require('object-assign');
-var clone = require('clone');
+/* eslint-disable array-callback-return */
+var AppDispatcher = require("../dispatcher/AppDispatcher");
+var EventEmitter = require("events").EventEmitter;
+var TimerConstants = require("../constants/TimerConstants");
+var Time = require("../utils/time.js");
+var assign = require("object-assign");
+var clone = require("clone");
 
-var CHANGE_EVENT = 'change';
+var CHANGE_EVENT = "change";
 
 var _topics = [];
 
 var TopicStore = assign({}, EventEmitter.prototype, {
-
   // トピック一覧を取得する
   get: function() {
     return _topics;
@@ -29,13 +29,10 @@ var TopicStore = assign({}, EventEmitter.prototype, {
   removeChangeListener: function(callback) {
     this.removeListener(CHANGE_EVENT, callback);
   }
-
 });
 
 AppDispatcher.register(function(action) {
-
-  switch(action.actionType) {
-
+  switch (action.actionType) {
     case TimerConstants.UPDATE_TOPICS:
       if (action.topics) {
         _topics = action.topics;
@@ -44,12 +41,12 @@ AppDispatcher.register(function(action) {
       break;
 
     case TimerConstants.RESET_TOPIC:
-      _topics.map(function(topic){
-        if ( topic.equal( action.topic ) ) {
-          action.total.remain._time += (topic.entire._time - topic.remain._time)
-          action.total.elapsed._time -= topic.elapsed._time
-          topic.remain = clone( topic.entire );
-          topic.elapsed = new Time('00:00');
+      _topics.map(function(topic) {
+        if (topic.equal(action.topic)) {
+          action.total.remain._time += topic.entire._time - topic.remain._time;
+          action.total.elapsed._time -= topic.elapsed._time;
+          topic.remain = clone(topic.entire);
+          topic.elapsed = new Time("00:00");
         }
       });
       TopicStore.emitChange();
@@ -62,14 +59,14 @@ AppDispatcher.register(function(action) {
         action.total.remain.decrease();
         action.total.elapsed.decrease(-1);
       }
-      if (typeof(action.callback) == 'function') {
+      if (typeof action.callback == "function") {
         action.callback(action.topic.remain._time, action.topic.entire._time);
       }
       TopicStore.emitChange();
       break;
 
     default:
-      // no op
+    // no op
   }
 });
 
