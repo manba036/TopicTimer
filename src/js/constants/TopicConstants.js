@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   topic_format: "予定時間,使用時間,残り時間,議題",
   header: "予定時間 / 使用時間 / 残り時間",
   total_label: "合計 ",

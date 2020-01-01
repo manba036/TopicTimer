@@ -1,7 +1,6 @@
-var store = require('store');
+import store from "store";
 
-module.exports = {
-
+export default {
   set: function(name, str, opts) {
     store.set(name, str);
   },
@@ -9,5 +8,4 @@ module.exports = {
   get: function(name) {
     return store.get(name);
   }
-
 };
